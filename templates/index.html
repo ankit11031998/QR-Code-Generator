@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="background-overlay"></div>
+<div class="container">
+    <div class="glass-card">
+        <h1>QR Code Generator</h1>
+        <p>Paste your link and generate a QR instantly</p>
+
+        <form method="POST" class="input-group">
+            <input type="text" name="url" placeholder="https://example.com" required autocomplete="off">
+            <button type="submit">Generate QR</button>
+        </form>
+
+        {% if qr_file %}
+        <div class="result fade-in">
+            <div class="qr-label">Your Generated QR</div>
+            
+            <div class="qr-wrapper">
+                <img src="{{ url_for('serve_qr', filename=qr_file) }}" alt="QR Code">
+            </div>
+
+            <a href="{{ url_for('download', filename=qr_file) }}" class="download-link">
+                <button class="download-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download QR
+                </button>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>
