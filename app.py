@@ -15,12 +15,24 @@ def index():
 
     if request.method == 'POST':
         url = request.form.get('url')
+        fg_color = request.form.get('fg_color', 'black')
+        bg_color = request.form.get('bg_color', 'white')
 
         if url:
             filename = f"{uuid.uuid4().hex}.png"
             file_path = os.path.join(QR_FOLDER, filename)
 
-            img = qrcode.make(url)
+            # High quality QR Code with custom colors
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(url)
+            qr.make(fit=True)
+
+            img = qr.make_image(fill_color=fg_color, back_color=bg_color)
             img.save(file_path)
 
             qr_file = filename
